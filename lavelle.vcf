@@ -1,8 +1,13 @@
 BEGIN:VCARD
 VERSION:3.0
+N:Scott;Lavelle;;;
 FN:Lavelle Scott
-TEL;TYPE=MOBILE:+1-480-848-5669
 ORG:Jerry Seiner Chevrolet Casa Grande
-TITLE:Car Guy
+TITLE:Your Maricopa Car Guy
+TEL;TYPE=CELL,VOICE:+14808485669
+TEL;TYPE=WORK,VOICE:+15202138861
+EMAIL;TYPE=INTERNET,WORK:lavelle.scott@jerryseiner.com
 ADR;TYPE=WORK:;;2427 E Florence Blvd;Casa Grande;AZ;85194;United States
+URL:https://lavellesellsaz.com
+NOTE:LavelleSellsAZ | Your Maricopa Car Guy
 END:VCARD
