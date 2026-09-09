@@ -179,7 +179,7 @@
     <p class="company">Jerry Seiner Chevrolet Casa Grande</p>
     
     <div class="button-group">
-      <a href="lavelle.vcf" download class="button button-primary">SAVE LAVELLE</a>
+      <button id="saveButton" class="button button-primary">SAVE LAVELLE</button>
       <a href="sms:+14808485669" class="button button-secondary">TEXT ME</a>
       <a href="tel:+14808485669" class="button button-secondary">CALL ME</a>
     </div>
@@ -188,5 +188,81 @@
     
     <p class="cta">Know someone shopping? Send them my way.</p>
   </div>
+
+  <script>
+    // Function to fold long lines in vCard (RFC 2426 compliance)
+    function foldVCardLine(line, maxLength = 75) {
+      if (line.length <= maxLength) {
+        return line;
+      }
+      let folded = line.substring(0, maxLength) + '\r\n';
+      let remaining = line.substring(maxLength);
+      while (remaining.length > maxLength - 1) {
+        folded += ' ' + remaining.substring(0, maxLength - 1) + '\r\n';
+        remaining = remaining.substring(maxLength - 1);
+      }
+      folded += ' ' + remaining;
+      return folded;
+    }
+
+    // Function to generate vCard with embedded base64 photo
+    async function generateVCard() {
+      try {
+        // Fetch the image file
+        const response = await fetch('lavelle-contact-photo.jpg');
+        const blob = await response.blob();
+        
+        // Convert blob to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        
+        reader.onload = function() {
+          // Extract base64 data (remove "data:image/jpeg;base64," prefix)
+          const base64Data = reader.result.split(',')[1];
+          
+          // Build vCard with embedded photo
+          let vcard = 'BEGIN:VCARD\r\n';
+          vcard += 'VERSION:3.0\r\n';
+          vcard += 'N:Scott;Lavelle;;;\r\n';
+          vcard += 'FN:Lavelle Scott\r\n';
+          vcard += 'ORG:Jerry Seiner Chevrolet Casa Grande\r\n';
+          vcard += 'TITLE:Your Maricopa Car Guy\r\n';
+          vcard += 'TEL;TYPE=CELL,VOICE:+14808485669\r\n';
+          vcard += 'TEL;TYPE=WORK,VOICE:+15202138861\r\n';
+          vcard += 'EMAIL;TYPE=INTERNET,WORK:lavelle.scott@jerryseiner.com\r\n';
+          vcard += 'ADR;TYPE=WORK:;;2427 E Florence Blvd;Casa Grande;AZ;85194;United States\r\n';
+          vcard += 'URL:https://lavellesellsaz.com\r\n';
+          vcard += 'NOTE:LavelleSellsAZ | Your Maricopa Car Guy\r\n';
+          
+          // Add embedded PHOTO with base64 data and proper line folding
+          const photoLine = 'PHOTO;ENCODING=b;TYPE=JPEG:' + base64Data;
+          vcard += foldVCardLine(photoLine) + '\r\n';
+          
+          vcard += 'END:VCARD';
+          
+          // Create blob and download
+          const vcardBlob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+          const url = URL.createObjectURL(vcardBlob);
+          const link = document.createElement('a');
+          link.setAttribute('href', url);
+          link.setAttribute('download', 'lavelle.vcf');
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        };
+      } catch (error) {
+        console.error('Error generating vCard:', error);
+        alert('Error generating contact. Please try again.');
+      }
+    }
+
+    // Attach click event to SAVE LAVELLE button
+    document.getElementById('saveButton').addEventListener('click', function(e) {
+      e.preventDefault();
+      generateVCard();
+    });
+  </script>
 </body>
 </html>
