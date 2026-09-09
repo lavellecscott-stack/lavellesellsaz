@@ -45,6 +45,24 @@
       justify-content: center;
     }
 
+    .profile-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 28px auto;
+    }
+
+    @media (max-width: 480px) {
+      .profile-photo {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
     .logo {
       width: 100%;
       max-width: 260px;
@@ -150,6 +168,8 @@
 </head>
 <body>
   <div class="container">
+    <img src="lavelle-contact-photo.jpg" alt="Lavelle Scott — Automotive Sales Professional" class="profile-photo">
+    
     <img src="logo-light.png" alt="Lavelle Sells AZ" class="logo">
     
     <h1>LAVELLE SCOTT</h1>
